@@ -1,9 +1,6 @@
 package com.prime.util.cardio;
 
-import javax.smartcardio.Card;
-import javax.smartcardio.CardException;
-import javax.smartcardio.CardTerminal;
-import javax.smartcardio.TerminalFactory;
+import javax.smartcardio.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -151,9 +148,13 @@ public class CardIO {
     }
 
 
+    public ResponseAPDU transmit(CardChannel cardChannel, byte[] data) throws CardException{
+        return cardChannel.transmit(new CommandAPDU(data));
+    }
+
+
 
     public void addListener(ICardListener cardListener){
         cardListeners.add(cardListener);
     }
-
 }
