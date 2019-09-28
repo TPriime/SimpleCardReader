@@ -153,8 +153,12 @@ public class CardIO {
     }
 
 
-
     public void addListener(ICardListener cardListener){
         cardListeners.add(cardListener);
+    }
+
+
+    public void disconnect(){
+        executorService.shutdownNow();
     }
 }
