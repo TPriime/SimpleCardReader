@@ -30,11 +30,11 @@ public class CardIO {
     private CardIO(){
         cardListeners = new ArrayList<>();
         cardTerminals = new ArrayList<>();
-        startDeviceDetectDemon();
+        startDeviceDetectDaemon();
     }
 
 
-    private void startDeviceDetectDemon(){
+    private void startDeviceDetectDaemon(){
         Thread thread = new Thread(()->{
             while(true){
                 final List<CardTerminal> oldCardTerminalList = cardTerminals, newList;
