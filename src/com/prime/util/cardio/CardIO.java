@@ -66,14 +66,14 @@ public class CardIO {
         Thread thread = new Thread(()-> {
             while (true) {
                 try{
-                     while(!cardTerminal.waitForCardPresent(500)) continue;
+                    while(!cardTerminal.waitForCardPresent(500)) continue;
                     cardListeners.forEach(l->l.onCardInserted(cardTerminal));
                     while(!cardTerminal.waitForCardAbsent(500)) continue;
                     cardListeners.forEach(l->l.onCardEjected(cardTerminal));
                 } catch(Exception e){
-                    System.out.println("device removed"); //Exception thrown by cardTerminal.waitForCardPresent or Ejected() instructs that the terminal is detached
+                    //Exception thrown by cardTerminal.waitForCardPresent or Ejected() instructs that the terminal is detached
                     cardListeners.forEach(l->l.onDeviceDetached(cardTerminal));
-                    return;
+                    return; //exit loop on error (i.e. device detach)
                 }
             }
         }, "CardDetectThread");
@@ -121,9 +121,6 @@ public class CardIO {
     }
     */
 
-    public Card connect(CardTerminal cardTerminal) throws CardException{
-        return cardTerminal.connect("*");
-    }
 
 
     public List<CardTerminal> getTerminals(){

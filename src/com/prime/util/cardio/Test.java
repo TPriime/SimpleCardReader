@@ -43,7 +43,7 @@ public class Test {
 
 
         byte[] write_command = new byte[]{(byte)0xFF, (byte)0xD0, (byte)0x01, (byte)0x04, (byte)0x0A};
-        byte[] commandData = "I am Daome".getBytes();
+        byte[] commandData = "I am Prime".getBytes();
         byte[] t = new byte[write_command.length + commandData.length];
         for (int i = 0; i < t.length; i++)
             if(i<write_command.length) t[i] = write_command[i];
@@ -52,6 +52,8 @@ public class Test {
         System.out.printf("writing: %s = %s\n", new String(commandData), Arrays.toString(commandData));
         System.out.printf("response: %d, %d\n", resp.getSW1(), resp.getSW2());
 
+        if(isNewCard(channel)) System.out.println("new card");
+        else System.out.println("not new");
 
 
         byte[] read_command = new byte[]{(byte)0xFF, (byte)0xB0, (byte)0x01, (byte)0x04, (byte)0x0A};
@@ -64,5 +66,12 @@ public class Test {
         System.out.println(new String(commandData));
 
         card.disconnect(false);
+    }
+
+    private static boolean isNewCard(CardChannel channel) throws CardException{
+        byte[] read_command = new byte[]{(byte)0xFF, (byte)0xB0, (byte)0x01, (byte)0x04, (byte)0x0A};
+        ResponseAPDU response = channel.transmit(new CommandAPDU(read_command));
+        if(new String(response.getData()).equals("I am Prime")) return false;
+        else return true;
     }
 }
